@@ -1,6 +1,8 @@
 import React from 'react'
 import HeadlineCard from '../components/HeadlineCard'
 import API from '../adapters/API'
+import { connect } from 'react-redux'
+import { fetchHeadlines } from '../actions/headlinesActions'
 
 class HeadlinesContainer extends React.Component {
   state = {
@@ -8,11 +10,11 @@ class HeadlinesContainer extends React.Component {
     savedArticles: [],
     page: 1,
     hasNextPage: false,
-    isNextPageLoading: false
+    loading: false
   }
 
   componentDidMount = () => {
-    this.getArticles();
+    this.props.fetchHeadlines({page: this.props.page});
     window.addEventListener('scroll', this.handleScroll)
     
     if (this.props.loggedIn) API.getUserSavedArticles()
@@ -28,8 +30,9 @@ class HeadlinesContainer extends React.Component {
   componnentWillUnmount = () => window.removeEventListener('scroll', this.handleScroll)
 
   handleScroll = () => {
-    const {hasNextPage, isNextPageLoading} = this.state
-    if (isNextPageLoading || !hasNextPage) return;
+    // const {hasNextPage, loading} = this.state
+    const {hasNextPage, loading} = this.props
+    if (loading || !hasNextPage) return;
   
     if (
       window.innerHeight + document.documentElement.scrollTop + 2500
@@ -52,13 +55,13 @@ class HeadlinesContainer extends React.Component {
       .then(data => this.setState({ 
         headlines: this.state.page === 1 ? data.articles : [...this.state.headlines, ...data.articles],
         hasNextPage: data.hasNextPage,
-        isNextPageLoading: false,
+        loading: false,
         page: this.state.page + 1
     }))
   }
 
   loadNextPage = () => {
-    this.setState({ isNextPageLoading: true }, () => {
+    this.setState({ loading: true }, () => {
       this.getArticles();
     });
   };
@@ -72,7 +75,9 @@ class HeadlinesContainer extends React.Component {
   };
 
   render() {
-    const {headlines, savedArticles, hasNextPage, isNextPageLoading} = this.state
+    // const {headlines, savedArticles, hasNextPage, loading} = this.state
+    const {savedArticles} = this.state
+    const {headlines, hasNextPage, loading} = this.props
 
     return (
       <main >
@@ -90,7 +95,7 @@ class HeadlinesContainer extends React.Component {
               ))
             }
             <br />
-            {isNextPageLoading &&
+            {loading &&
               <div>Loading...</div>
             }
             {(!hasNextPage &&  document.documentElement.scrollTop > 1000) &&
@@ -101,4 +106,17 @@ class HeadlinesContainer extends React.Component {
   }
 }
 
-export default HeadlinesContainer;
+const mapStateToProps = state => {
+  return {
+    headlines: state.headlinesReducer.headlines,
+    loading: state.headlinesReducer.loading,
+    page: state.headlinesReducer.page,
+    hasNextPage: state.headlinesReducer.hasNextPage,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return { fetchHeadlines: props => dispatch(fetchHeadlines(props))}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeadlinesContainer);
