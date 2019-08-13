@@ -1,8 +1,5 @@
 {
   "name": "newsapp",
-  "engines": {
-    "node": "6.3.1"
-  },
   "version": "1.0.0",
   "description": "This README would normally document whatever steps are necessary to get the application up and running.",
   "main": "index.js",
@@ -17,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rudihinds/news-app.git"
+    "url": "git+https://github.com/mbarrins/news-app.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rudihinds/news-app/issues"
+    "url": "https://github.com/mbarrins/news-app/issues"
   },
-  "homepage": "https://github.com/rudihinds/news-app#readme",
+  "homepage": "https://github.com/mbarrins/news-app#readme",
   "dependencies": {
     "semantic-ui-css": "^2.4.1"
   }

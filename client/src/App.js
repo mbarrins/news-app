@@ -9,6 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Navbar from './components/Navbar'
 import PrivateRoute from './components/PrivateRoute'
 import Footer from './components/Footer'
+import { connect } from 'react-redux'
 
 class App extends React.Component{
 
@@ -29,7 +30,8 @@ class App extends React.Component{
 
   userLogOut = () => {
     API.clearToken();
-    this.setState({ loggedIn: false})
+    this.setState({ loggedIn: false});
+    this.props.userLogOutStore();
   }
 
   userLogIn = () => this.setState({ loggedIn: true})
@@ -77,4 +79,8 @@ class App extends React.Component{
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return { userLogOutStore: () => dispatch({type: 'USER_LOGOUT'})}
+}
+
+export default connect(null, mapDispatchToProps)(App);
