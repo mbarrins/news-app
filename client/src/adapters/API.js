@@ -1,4 +1,4 @@
-const apiEndpoint = 'http://localhost:3000/api/v1'
+const apiEndpoint = 'https://news-react-project.herokuapp.com/api/v1'
 const articlesUrl = `${apiEndpoint}/articles`
 const sourcesUrl = `${apiEndpoint}/sources`
 const usersUrl = `${apiEndpoint}/users`
