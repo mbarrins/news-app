@@ -7,5 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 sources = JSON.parse(RestClient.get("https://newsapi.org/v2/sources?language=en&apiKey=#{ENV["API_KEY"]}"))['sources']
-sources = sources.each{|source| source["api_id"] = source.delete("id")}
+sources.each{|source| source["api_id"] = source.delete("id")}
+sources.each{|source| source["active"] = true}
 sources.each{|source| Source.find_or_create_by(source)}
