@@ -42,9 +42,9 @@ const useStyles = makeStyles(theme => ({
       
       <List>
         <br/>
-        <ListItem component={Link} to="/" button key={"Latest Headlines"}>
+        <ListItem component={Link} to="/" button key={"All Headlines"}>
           <ListItemIcon><InboxIcon /></ListItemIcon>
-          <ListItemText primary={"Latest Headlines"} />
+          <ListItemText primary={"All Headlines"} />
         </ListItem>
       
       </List>
@@ -52,9 +52,9 @@ const useStyles = makeStyles(theme => ({
       <List>
         {loggedIn ?
           <>
-          <ListItem component={Link} to="/my-headlines" button key={"My Curated Articles"} >
+          <ListItem component={Link} to="/my-headlines" button key={"My Headlines"} >
             <ListItemIcon><MailIcon /></ListItemIcon>
-            <ListItemText primary={"My Curated Articles"} />
+            <ListItemText primary={"My Headlines"} />
           </ListItem>
 
           <ListItem component={Link} to='/user-sources' button key={"Edit Favourite Sources"} >

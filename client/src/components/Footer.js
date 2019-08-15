@@ -16,7 +16,7 @@ const Footer = () => {
 
   return (
     <div className="footer" style={style}>
-    <a href={'https://newsapi.org/'} target="_blank" rel="noopener noreferrer" >powered by NewsAPI.org</a>
+    <a href='https://newsapi.org/'  rel="noopener noreferrer" target="_blank" >powered by NewsAPI.org</a>
     </div>
   )
 }

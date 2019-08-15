@@ -2,7 +2,7 @@ import React from 'react'
 import HeadlineCard from '../components/HeadlineCard'
 import API from '../adapters/API'
 import { connect } from 'react-redux'
-import { fetchHeadlines } from '../actions/headlinesActions'
+import { fetchHeadlines, updateHeadlines } from '../actions/headlinesActions'
 
 class HeadlinesContainer extends React.Component {
   state = {
@@ -14,7 +14,7 @@ class HeadlinesContainer extends React.Component {
   }
 
   componentDidMount = () => {
-    this.props.fetchHeadlines({page: this.props.page});
+    this.props.fetchHeadlines({page: this.props.page, type: 'all'});
     window.addEventListener('scroll', this.handleScroll)
     
     if (this.props.loggedIn) API.getUserSavedArticles()
@@ -23,7 +23,7 @@ class HeadlinesContainer extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.search !== this.props.search) {
-      this.setState({page: 1}, this.getArticles(1));
+      this.props.updateHeadlines({page: 1}, this.articleType(1));
     }
   }
 
@@ -43,27 +43,25 @@ class HeadlinesContainer extends React.Component {
   }
 
   articleType = (page) => {
-    if (this.props.displayType === 'user' && this.props.loggedIn) return API.getArticles({page: this.state.page, type: 'user'})
+    if (this.props.displayType === 'user' && this.props.loggedIn) return  this.props.fetchHeadlines({page: this.props.page, type: 'user'})
 
-    if (this.props.displayType === 'search') return API.getArticles({page: page ? page : this.state.page, type: this.props.displayType, search: this.props.search})
+    if (this.props.displayType === 'search') return  this.props.fetchHeadlines({page: page ? page : this.props.page, type: this.props.displayType, search: this.props.search})
 
-    return API.getArticles({page: this.state.page, type: 'all'})
+    return  this.props.fetchHeadlines({page: this.props.page, type: 'all'})
   }
 
-  getArticles = (page) => {
-    this.articleType(page)
-      .then(data => this.setState({ 
-        headlines: this.state.page === 1 ? data.articles : [...this.state.headlines, ...data.articles],
-        hasNextPage: data.hasNextPage,
-        loading: false,
-        page: this.state.page + 1
-    }))
-  }
+  // getArticles = (page) => {
+  //   this.articleType(page)
+  //     .then(data => this.setState({ 
+  //       headlines: this.state.page === 1 ? data.articles : [...this.state.headlines, ...data.articles],
+  //       hasNextPage: data.hasNextPage,
+  //       loading: false,
+  //       page: this.state.page + 1
+  //   }))
+  // }
 
   loadNextPage = () => {
-    this.setState({ loading: true }, () => {
-      this.getArticles();
-    });
+      this.articleType();
   };
 
   toggleSavedArticle = id => {
@@ -116,7 +114,10 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return { fetchHeadlines: props => dispatch(fetchHeadlines(props))}
+  return { 
+    fetchHeadlines: props => dispatch(fetchHeadlines(props)), 
+    updateHeadlines: props => dispatch(updateHeadlines(props))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeadlinesContainer);

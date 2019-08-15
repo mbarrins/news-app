@@ -8,6 +8,13 @@ export default function headlinesReducer(state = {
     case 'LOADING_HEADLINES':
 
       return {...state, loading: true}
+
+    case 'UPDATE _HEADLINES':
+      
+      return {
+        ...state,
+        ...action.payload
+      }
       
     case 'FETCH_HEADLINES':
 
