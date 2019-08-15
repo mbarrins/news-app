@@ -24,6 +24,7 @@ export const fetchHeadlines = ({page, type}) => {
 }
 
 export const updateHeadlines = data => {
+  console.log('update action', data)
   return {
     type: 'UPDATE_HEADLINES',
     payload: data

@@ -12,7 +12,12 @@ export default function headlinesReducer(state = {
         loading: true
       }
 
-    case 'UPDATE _HEADLINES':
+    case 'UPDATE_HEADLINES':
+      console.log('reducer', action.payload)
+      console.log('new state', {
+        ...state,
+        ...action.payload
+      })
       
       return {
         ...state,
@@ -24,7 +29,6 @@ export default function headlinesReducer(state = {
       return {
         ...state,
         loading: false,
-        page: state.page + 1,
         headlines: action.payload.articles,
         hasNextPage: action.payload.hasNextPage
       }

@@ -6,25 +6,23 @@ import { fetchHeadlines, updateHeadlines } from '../actions/headlinesActions'
 
 class HeadlinesContainer extends React.Component {
   state = {
-    headlines: [],
-    savedArticles: [],
-    page: 1,
-    hasNextPage: false,
-    loading: false
+    savedArticles: []
   }
 
   componentDidMount = () => {
-    console.log('props', this.props)
-    this.props.fetchHeadlines({page: this.props.page, type: 'all'});
+    this.props.fetchHeadlines({page: 1, type: 'all'})
+      .then(this.props.updateHeadlines({page: 2}))
+
     window.addEventListener('scroll', this.handleScroll)
-    
+
     if (this.props.loggedIn) API.getUserSavedArticles()
         .then(savedArticles => this.setState(savedArticles))
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.search !== this.props.search) {
-      this.props.updateHeadlines({page: 1}, this.articleType(1));
+      this.articleType(1)
+      .then(this.props.updateHeadlines({page: 2}))
     }
   }
 
@@ -43,11 +41,13 @@ class HeadlinesContainer extends React.Component {
   }
 
   articleType = (page) => {
-    if (this.props.displayType === 'user' && this.props.loggedIn) return  this.props.fetchHeadlines({page: this.props.page, type: 'user'})
+    const use_page = page ? page : this.props.page
 
-    if (this.props.displayType === 'search') return  this.props.fetchHeadlines({page: page ? page : this.props.page, type: this.props.displayType, search: this.props.search})
+    if (this.props.displayType === 'user' && this.props.loggedIn) return  this.props.fetchHeadlines({page: use_page, type: 'user'}).then(this.props.updateHeadlines({page: use_page + 1}))
 
-    return  this.props.fetchHeadlines({page: this.props.page, type: 'all'})
+    if (this.props.displayType === 'search') return  this.props.fetchHeadlines({page: use_page, type: this.props.displayType, search: this.props.search}).then(this.props.updateHeadlines({page: use_page + 1}))
+
+    return  this.props.fetchHeadlines({page: use_page, type: 'all'}).then(this.props.updateHeadlines({page: use_page + 1}))
   }
 
   loadNextPage = () => {
