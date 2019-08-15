@@ -7,7 +7,10 @@ export default function headlinesReducer(state = {
   switch (action.type) {
     case 'LOADING_HEADLINES':
 
-      return {...state, loading: true}
+      return {
+        ...state, 
+        loading: true
+      }
 
     case 'UPDATE _HEADLINES':
       

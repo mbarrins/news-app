@@ -14,6 +14,7 @@ class HeadlinesContainer extends React.Component {
   }
 
   componentDidMount = () => {
+    console.log('props', this.props)
     this.props.fetchHeadlines({page: this.props.page, type: 'all'});
     window.addEventListener('scroll', this.handleScroll)
     
@@ -30,7 +31,6 @@ class HeadlinesContainer extends React.Component {
   componnentWillUnmount = () => window.removeEventListener('scroll', this.handleScroll)
 
   handleScroll = () => {
-    // const {hasNextPage, loading} = this.state
     const {hasNextPage, loading} = this.props
     if (loading || !hasNextPage) return;
   
@@ -50,16 +50,6 @@ class HeadlinesContainer extends React.Component {
     return  this.props.fetchHeadlines({page: this.props.page, type: 'all'})
   }
 
-  // getArticles = (page) => {
-  //   this.articleType(page)
-  //     .then(data => this.setState({ 
-  //       headlines: this.state.page === 1 ? data.articles : [...this.state.headlines, ...data.articles],
-  //       hasNextPage: data.hasNextPage,
-  //       loading: false,
-  //       page: this.state.page + 1
-  //   }))
-  // }
-
   loadNextPage = () => {
       this.articleType();
   };
@@ -73,7 +63,6 @@ class HeadlinesContainer extends React.Component {
   };
 
   render() {
-    // const {headlines, savedArticles, hasNextPage, loading} = this.state
     const {savedArticles} = this.state
     const {headlines, hasNextPage, loading} = this.props
 

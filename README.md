@@ -1,24 +1,9 @@
-# README
+# NewsApp
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A site to view the latest headlines from multiple sources, either all available or only those you select and save your favourites for review later. Written using Javascript with React and React-Router with a Ruby-on-Rails API backend, in addition to utilising [News API](https://newsapi.org/) for the headlines.
 
-Things you may want to cover:
+Authors
 
-* Ruby version
+[Rudi Hinds](https://github.com/rudihinds)   
+[Maija Barrins](https://github.com/mbarrins)
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
